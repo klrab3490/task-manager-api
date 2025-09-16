@@ -1,12 +1,10 @@
+const config = require('dotenv').config().parsed;
 const express = require('express');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 const cors = require('cors');
 
-dotenv.config(); // load .env
-
 const app = express();
-const port = process.env.PORT || 2000;
+const port = config.PORT;
 
 // Middleware
 app.use(express.json());        // parse JSON bodies

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+    <header class="bg-gray-800 text-white py-4 text-center text-2xl font-bold">
+        Task Manager
+    </header>
+
+    <main class="max-w-3xl mx-auto mt-6 p-6 bg-white shadow-md rounded-xl">
+        <!-- Create Task -->
+        <h2 class="text-xl font-semibold mb-4">Create New Task</h2>
+        <form id="task-form" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium">Title</label>
+                <input id="title" class="w-full border rounded-lg px-3 py-2" required />
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Description</label>
+                <textarea id="description" class="w-full border rounded-lg px-3 py-2"></textarea>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Status</label>
+                <select id="status" class="w-full border rounded-lg px-3 py-2">
+                    <option value="pending">Pending</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Due Date</label>
+                <input type="date" id="dueDate" class="w-full border rounded-lg px-3 py-2" />
+            </div>
+            <button class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                Add Task
+            </button>
+        </form>
+
+        <!-- All Tasks -->
+        <h2 class="text-xl font-semibold mt-8 mb-4">All Tasks</h2>
+        <div id="tasks-container" class="space-y-4"></div>
+    </main>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-xl shadow-md w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold">Edit Task</h2>
+                <button class="text-gray-500 hover:text-red-500 text-2xl font-bold"
+                    onclick="closeModal()">&times;</button>
+            </div>
+            <form id="edit-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium">Title</label>
+                    <input id="edit-title" class="w-full border rounded-lg px-3 py-2" required />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium">Description</label>
+                    <textarea id="edit-description" class="w-full border rounded-lg px-3 py-2"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium">Status</label>
+                    <select id="edit-status" class="w-full border rounded-lg px-3 py-2">
+                        <option value="pending">Pending</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium">Due Date</label>
+                    <input type="date" id="edit-dueDate" class="w-full border rounded-lg px-3 py-2" />
+                </div>
+                <button class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                    Update Task
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../config.js">
+        console.log("Config loaded:", window.config);
+    </script>
+
+    <script>
+        let API_URL = "";
+
+        let currentEditId = null;
+
+        async function fetchTasks() {
+            const res = await fetch(API_URL);
+            const tasks = await res.json();
+            const container = document.getElementById("tasks-container");
+            container.innerHTML = "";
+            tasks.forEach(task => {
+                const div = document.createElement("div");
+                div.className = "p-4 border rounded-lg shadow-sm";
+                div.innerHTML = `
+          <h3 class="font-bold text-lg">${task.title}</h3>
+          <p class="text-gray-700">${task.description || ""}</p>
+          <p class="text-sm text-gray-500">Status: <span class="font-semibold">${task.status}</span> | Due: ${task.dueDate ? new Date(task.dueDate).toLocaleDateString() : "N/A"}</p>
+          <div class="flex gap-2 mt-2">
+            <button class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700" onclick="openEdit('${task._id}','${task.title}','${task.description}','${task.status}','${task.dueDate || ""}')">Edit</button>
+            <button class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700" onclick="deleteTask('${task._id}')">Delete</button>
+          </div>
+        `;
+                container.appendChild(div);
+            });
+        }
+
+        async function createTask(e) {
+            e.preventDefault();
+            const task = {
+                title: document.getElementById("title").value,
+                description: document.getElementById("description").value,
+                status: document.getElementById("status").value,
+                dueDate: document.getElementById("dueDate").value
+            };
+            await fetch(API_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(task) });
+            e.target.reset();
+            fetchTasks();
+        }
+
+        window.openEdit = (id, title, description, status, dueDate) => {
+            currentEditId = id;
+            document.getElementById("edit-title").value = title;
+            document.getElementById("edit-description").value = description;
+            document.getElementById("edit-status").value = status;
+            if (dueDate) document.getElementById("edit-dueDate").value = new Date(dueDate).toISOString().split("T")[0];
+            document.getElementById("editModal").classList.remove("hidden");
+        };
+
+        async function editTask(e) {
+            e.preventDefault();
+            const task = {
+                title: document.getElementById("edit-title").value,
+                description: document.getElementById("edit-description").value,
+                status: document.getElementById("edit-status").value,
+                dueDate: document.getElementById("edit-dueDate").value
+            };
+            await fetch(`${API_URL}/${currentEditId}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(task) });
+            closeModal();
+            fetchTasks();
+        }
+
+        window.deleteTask = async (id) => {
+            await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+            fetchTasks();
+        };
+
+        window.closeModal = () => {
+            document.getElementById("editModal").classList.add("hidden");
+        };
+
+        document.getElementById("task-form").addEventListener("submit", createTask);
+        document.getElementById("edit-form").addEventListener("submit", editTask);
+        window.onload = fetchTasks;
+    </script>
+
+</body>
+
+</html>
