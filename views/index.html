@@ -8,91 +8,110 @@
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
 
-    <body class="bg-gray-100 min-h-screen">
-        <header
-            class="bg-gray-800 text-white py-4 text-center text-2xl font-bold">
-            Task Manager
+    <body class="bg-gradient-to-br from-blue-100 to-indigo-200 min-h-screen">
+        <header class="bg-white shadow-lg py-6 px-4 flex justify-between items-center">
+            <h1 class="text-3xl font-extrabold text-indigo-700 tracking-tight">Task Manager</h1>
+            <span class="text-indigo-400 font-semibold">Stay organized, stay productive</span>
         </header>
 
-        <main class="max-w-3xl mx-auto mt-6 p-6 bg-white shadow-md rounded-xl">
+        <main class="m-10 p-10 bg-white/90 shadow-2xl rounded-3xl">
             <!-- Create Task -->
-            <h2 class="text-xl font-semibold mb-4">Create New Task</h2>
-            <form id="task-form" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium">Title</label>
-                    <input id="title" class="w-full border rounded-lg px-3 py-2"
-                        required />
-                </div>
-                <div>
-                    <label class="block text-sm font-medium">Description</label>
-                    <textarea id="description"
-                        class="w-full border rounded-lg px-3 py-2"></textarea>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium">Status</label>
-                    <select id="status"
-                        class="w-full border rounded-lg px-3 py-2">
-                        <option value="pending">Pending</option>
-                        <option value="in-progress">In Progress</option>
-                        <option value="completed">Completed</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium">Due Date</label>
-                    <input type="date" id="dueDate"
-                        class="w-full border rounded-lg px-3 py-2" />
-                </div>
-                <button
-                    class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
-                    Add Task
-                </button>
-            </form>
+            <section class="mb-10">
+                <h2 class="text-2xl font-bold mb-6 text-indigo-700 flex items-center gap-2">
+                    <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Create New Task
+                </h2>
+                <form id="task-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-indigo-600 mb-1">Title</label>
+                        <input id="title" class="w-full border-2 border-indigo-200 rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500" required />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-indigo-600 mb-1">Status</label>
+                        <select id="status" class="w-full border-2 border-indigo-200 rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500">
+                            <option value="pending">Pending</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-indigo-600 mb-1">Description</label>
+                        <textarea id="description" class="w-full border-2 border-indigo-200 rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-indigo-600 mb-1">Due Date</label>
+                        <input type="date" id="dueDate" class="w-full border-2 border-indigo-200 rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500" />
+                    </div>
+                    <div class="flex items-end">
+                        <button class="bg-indigo-600 text-white px-6 py-2 rounded-xl font-semibold shadow hover:bg-indigo-700 transition w-full">
+                            Add Task
+                        </button>
+                    </div>
+                </form>
+            </section>
 
             <!-- All Tasks -->
-            <h2 class="text-xl font-semibold mt-8 mb-4">All Tasks</h2>
-            <div id="tasks-container" class="space-y-4"></div>
+            <section>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700 flex items-center gap-2">
+                        <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        All Tasks
+                    </h2>
+                    <div class="mb-6 flex gap-4">
+                        <button id="filter-all" class="bg-indigo-500 text-white px-4 py-2 rounded-xl font-semibold shadow hover:bg-indigo-600 transition">
+                            All
+                        </button>
+                        <button id="filter-pending" class="bg-yellow-400 text-white px-4 py-2 rounded-xl font-semibold shadow hover:bg-yellow-500 transition">
+                            Pending
+                        </button>
+                        <button id="filter-in-progress" class="bg-blue-400 text-white px-4 py-2 rounded-xl font-semibold shadow hover:bg-blue-500 transition">
+                            In Progress
+                        </button>
+                        <button id="filter-completed" class="bg-green-500 text-white px-4 py-2 rounded-xl font-semibold shadow hover:bg-green-600 transition">
+                            Completed
+                        </button>
+                    </div>
+                </div>
+                <!-- Data -->
+                <div id="tasks-container" class="grid grid-cols-2 gap-6"></div>
+            </section>
         </main>
 
         <!-- Edit Modal -->
         <div id="editModal"
-            class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div class="bg-white p-6 rounded-xl shadow-md w-full max-w-md">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-bold">Edit Task</h2>
-                    <button
-                        class="text-gray-500 hover:text-red-500 text-2xl font-bold"
-                        onclick="closeModal()">&times;</button>
-                </div>
-                <form id="edit-form" class="space-y-4">
+            class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+            <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-lg relative">
+                <button class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-3xl font-bold"
+                    onclick="closeModal()">&times;</button>
+                <h2 class="text-xl font-bold mb-6 text-indigo-700">Edit Task</h2>
+                <form id="edit-form" class="space-y-5">
                     <div>
-                        <label class="block text-sm font-medium">Title</label>
-                        <input id="edit-title"
-                            class="w-full border rounded-lg px-3 py-2"
-                            required />
+                        <label class="block text-sm font-semibold text-indigo-600 mb-1">Title</label>
+                        <input id="edit-title" class="w-full border-2 border-indigo-200 rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500" required />
                     </div>
                     <div>
-                        <label
-                            class="block text-sm font-medium">Description</label>
-                        <textarea id="edit-description"
-                            class="w-full border rounded-lg px-3 py-2"></textarea>
+                        <label class="block text-sm font-semibold text-indigo-600 mb-1">Description</label>
+                        <textarea id="edit-description" class="w-full border-2 border-indigo-200 rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500"></textarea>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium">Status</label>
-                        <select id="edit-status"
-                            class="w-full border rounded-lg px-3 py-2">
+                        <label class="block text-sm font-semibold text-indigo-600 mb-1">Status</label>
+                        <select id="edit-status" class="w-full border-2 border-indigo-200 rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500">
                             <option value="pending">Pending</option>
                             <option value="in-progress">In Progress</option>
                             <option value="completed">Completed</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium">Due
-                            Date</label>
-                        <input type="date" id="edit-dueDate"
-                            class="w-full border rounded-lg px-3 py-2" />
+                        <label class="block text-sm font-semibold text-indigo-600 mb-1">Due Date</label>
+                        <input type="date" id="edit-dueDate" class="w-full border-2 border-indigo-200 rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500" />
                     </div>
-                    <button
-                        class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                    <button class="bg-indigo-600 text-white px-6 py-2 rounded-xl font-semibold shadow hover:bg-indigo-700 transition w-full">
                         Update Task
                     </button>
                 </form>
@@ -100,81 +119,137 @@
         </div>
 
         <script src="../config.js"></script>
-
         <script>
-        let API_URL = window.config && window.config.apiUrl ? window.config.apiUrl : "";
-        console.log("Using API URL:", API_URL);
-        
+            let API_URL = window.config && window.config.apiUrl ? window.config.apiUrl : "";
+            let currentEditId = null;
 
-        async function fetchTasks() {
-            const res = await fetch(`${API_URL}/tasks`);
-            const tasks = await res.json();
-            const container = document.getElementById("tasks-container");
-            container.innerHTML = "";
-            tasks.forEach(task => {
-                const div = document.createElement("div");
-                div.className = "p-4 border rounded-lg shadow-sm";
-                div.innerHTML = `
-                    <h3 class="font-bold text-lg">${task.title}</h3>
-                    <p class="text-gray-700">${task.description || ""}</p>
-                    <p class="text-sm text-gray-500">Status: <span class="font-semibold">${task.status}</span> | Due: ${task.dueDate ? new Date(task.dueDate).toLocaleDateString() : "N/A"}</p>
-                    <div class="flex gap-2 mt-2">
-                        <button class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700" onclick="openEdit('${task._id}','${task.title}','${task.description}','${task.status}','${task.dueDate || ""}')">Edit</button>
-                        <button class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700" onclick="deleteTask('${task._id}')">Delete</button>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
+            async function fetchTasks(status = "all") {
+                let url = status === "all" ? `${API_URL}/tasks` : `${API_URL}/tasks/status/${status}`;
+                console.log("Fetching:", url);
 
-        async function createTask(e) {
-            e.preventDefault();
-            const task = {
-                title: document.getElementById("title").value,
-                description: document.getElementById("description").value,
-                status: document.getElementById("status").value,
-                dueDate: document.getElementById("dueDate").value
+                const res = await fetch(url);
+                const tasks = await res.json();
+                const container = document.getElementById("tasks-container");
+                container.innerHTML = "";
+                if (tasks.length === 0) {
+                    container.innerHTML = `<div class="text-center text-gray-400 py-10">No tasks yet. Add your first task!</div>`;
+                    return;
+                }
+                tasks.forEach(task => {
+                    const div = document.createElement("div");
+                    div.className =
+                        "bg-white border-2 border-indigo-100 rounded-2xl shadow-lg p-6 flex flex-col gap-2 hover:shadow-xl transition";
+                    div.innerHTML = `
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-xl text-indigo-800">${task.title}</h3>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold ${
+                                task.status === "completed"
+                                    ? "bg-green-100 text-green-700"
+                                    : task.status === "in-progress"
+                                        ? "bg-yellow-100 text-yellow-700"
+                                        : "bg-gray-100 text-gray-700"
+                            }">${task.status.replace("-", " ")}</span>
+                        </div>
+                        <p class="text-gray-700">${task.description || ""}</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-sm text-gray-500">Due: ${
+                                task.dueDate ? new Date(task.dueDate).toLocaleDateString() : "N/A"
+                            }</span>
+                            <div class="flex gap-2">
+                                <button class="bg-indigo-500 text-white px-4 py-1 rounded-lg font-medium hover:bg-indigo-600 transition"
+                                    onclick="openEdit('${task._id}','${encodeURIComponent(task.title)}','${encodeURIComponent(
+                        task.description || ""
+                    )}','${task.status}','${task.dueDate || ""}')">Edit</button>
+                                <button class="bg-red-500 text-white px-4 py-1 rounded-lg font-medium hover:bg-red-600 transition"
+                                    onclick="deleteTask('${task._id}')">Delete</button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            }
+
+            // ✅ Function to set active button
+            function setActiveButton(activeId) {
+                const buttons = document.querySelectorAll("#filter-all, #filter-pending, #filter-in-progress, #filter-completed");
+                buttons.forEach(btn => {
+                    btn.classList.remove("ring-2", "ring-offset-2", "ring-indigo-600"); // remove highlight
+                });
+                document.getElementById(activeId).classList.add("ring-2", "ring-offset-2", "ring-indigo-600"); // highlight active
+            }
+
+            async function createTask(e) {
+                e.preventDefault();
+                const task = {
+                    title: document.getElementById("title").value,
+                    description: document.getElementById("description").value,
+                    status: document.getElementById("status").value,
+                    dueDate: document.getElementById("dueDate").value
+                };
+                await fetch(`${API_URL}/tasks`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(task)
+                });
+                e.target.reset();
+                fetchTasks("all");
+                setActiveButton("filter-all");
+            }
+
+            window.openEdit = (id, title, description, status, dueDate) => {
+                currentEditId = id;
+                document.getElementById("edit-title").value = decodeURIComponent(title);
+                document.getElementById("edit-description").value = decodeURIComponent(description);
+                document.getElementById("edit-status").value = status;
+                document.getElementById("edit-dueDate").value = dueDate
+                    ? new Date(dueDate).toISOString().split("T")[0]
+                    : "";
+                document.getElementById("editModal").classList.remove("hidden");
             };
-            await fetch(`${API_URL}/tasks`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(task) });
-            e.target.reset();
-            fetchTasks();
-        }
 
-        window.openEdit = (id, title, description, status, dueDate) => {
-            currentEditId = id;
-            document.getElementById("edit-title").value = title;
-            document.getElementById("edit-description").value = description;
-            document.getElementById("edit-status").value = status;
-            if (dueDate) document.getElementById("edit-dueDate").value = new Date(dueDate).toISOString().split("T")[0];
-            document.getElementById("editModal").classList.remove("hidden");
-        };
+            async function editTask(e) {
+                e.preventDefault();
+                const task = {
+                    title: document.getElementById("edit-title").value,
+                    description: document.getElementById("edit-description").value,
+                    status: document.getElementById("edit-status").value,
+                    dueDate: document.getElementById("edit-dueDate").value
+                };
+                await fetch(`${API_URL}/tasks/${currentEditId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(task)
+                });
+                closeModal();
+                fetchTasks("all");
+                setActiveButton("filter-all");
+            }
 
-        async function editTask(e) {
-            e.preventDefault();
-            const task = {
-                title: document.getElementById("edit-title").value,
-                description: document.getElementById("edit-description").value,
-                status: document.getElementById("edit-status").value,
-                dueDate: document.getElementById("edit-dueDate").value
+            window.deleteTask = async (id) => {
+                await fetch(`${API_URL}/tasks/${id}`, { method: "DELETE" });
+                fetchTasks("all");
+                setActiveButton("filter-all");
             };
-            await fetch(`${API_URL}/tasks/${currentEditId}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(task) });
-            closeModal();
-            fetchTasks();
-        }
 
-        window.deleteTask = async (id) => {
-            await fetch(`${API_URL}/tasks/${id}`, { method: "DELETE" });
-            fetchTasks();
-        };
+            window.closeModal = () => {
+                document.getElementById("editModal").classList.add("hidden");
+            };
 
-        window.closeModal = () => {
-            document.getElementById("editModal").classList.add("hidden");
-        };
+            // Event listeners
+            document.getElementById("task-form").addEventListener("submit", createTask);
+            document.getElementById("edit-form").addEventListener("submit", editTask);
 
-        document.getElementById("task-form").addEventListener("submit", createTask);
-        document.getElementById("edit-form").addEventListener("submit", editTask);
-        window.onload = fetchTasks;
-    </script>
+            document.getElementById("filter-all").addEventListener("click", () => { fetchTasks("all"); setActiveButton("filter-all"); });
+            document.getElementById("filter-pending").addEventListener("click", () => { fetchTasks("pending"); setActiveButton("filter-pending"); });
+            document.getElementById("filter-in-progress").addEventListener("click", () => { fetchTasks("in-progress"); setActiveButton("filter-in-progress"); });
+            document.getElementById("filter-completed").addEventListener("click", () => { fetchTasks("completed"); setActiveButton("filter-completed"); });
+
+            // ✅ Default: load "All" and highlight button
+            window.onload = () => {
+                fetchTasks("all");
+                setActiveButton("filter-all");
+            };
+        </script>
 
     </body>
 
